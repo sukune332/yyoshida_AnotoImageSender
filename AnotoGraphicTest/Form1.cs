@@ -166,6 +166,7 @@ namespace AnotoGraphicTest
                     g.DrawLine(p, (int)listx[i][j] * 8, (int)listy[i][j] * 8, (int)listx[i][j + 1] * 8, (int)listy[i][j + 1] * 8);
                 }
             }
+            
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -213,6 +214,14 @@ namespace AnotoGraphicTest
 
         public void XmlSerialize(String path)
         {
+            for (int i = x1; i < x; i += x1)
+            {
+                for (int j = y1; j < y; j += y1)
+                {
+                    g.DrawImageUnscaled(bmp, i, j);
+                }
+            }
+
             DataSet ds = new DataSet();
             ds.ReadXml(path);
 
@@ -255,7 +264,7 @@ namespace AnotoGraphicTest
                     g.DrawLine(p, (int)listx[i][j]*4 , (int)listy[i][j]*4 , (int)listx[i][j + 1]*4 , (int)listy[i][j + 1]*4 );
                 }
             }
-
+            
 
 
             /*
@@ -300,7 +309,7 @@ namespace AnotoGraphicTest
             //[ファイルの種類]に表示される選択肢を指定する
             //指定しないとすべてのファイルが表示される
             ofd.Filter =
-                "アノトストロークファイル(*.xml)|*.xml|すべてのファイル(*.*)|*.*";
+                "すべてのファイル(*.*)|*.*";
             //[ファイルの種類]ではじめに
             //「すべてのファイル」が選択されているようにする
             //ofd.FilterIndex = 2;
@@ -323,7 +332,7 @@ namespace AnotoGraphicTest
                 g = Graphics.FromImage(imgbmp);
                 drawText();
             }
-
+            
 
         }
 
