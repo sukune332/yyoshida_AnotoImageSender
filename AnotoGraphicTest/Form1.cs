@@ -21,20 +21,31 @@ namespace AnotoGraphicTest
         int y1 = 20;
         int x = 500;
         int y = 500;
+        List<List<double>> listx;
+        List<List<double>> listy;
 
         public Form1()
         {
+            // GUIを初期化してくれる公式のメソッド。ありがたい。
             InitializeComponent();
 
+            // 一番のベースとなるGraphicを初期化する
             g = this.CreateGraphics();
+
+            // グリッド表示用の1点を作成
             bmp = new Bitmap(1, 1);
+            // 色を設定
             bmp.SetPixel(0, 0, Color.Black);
+            
+            // ペンのためのBrushを初期化（ペンのインク）
             br = new SolidBrush(Color.Blue);
+            // 筆跡を描くためのペンを初期化（ペン）
             p = new Pen(br,5);
         }
 
         void drawText()
         {
+            // グリッド表示
             for (int i = x1; i < x; i += x1)
             {
                 for (int j = y1; j < y; j += y1)
@@ -43,6 +54,8 @@ namespace AnotoGraphicTest
                 }
             }
 
+            /*
+             // 手打ちデータ。頑張りました。
             double[] xx = new double[]{
                 09.875,
                 10.375,
@@ -91,8 +104,10 @@ namespace AnotoGraphicTest
                 33.0,
                 32.875
             };
+             */
 
-            // List版
+            /*
+            // List版 手打ちデータ
             List<double> listtmpx = new List<double>();
             List<List<double>> listx = new List<List<double>>();
             List<double> listtmpy = new List<double>();
@@ -148,9 +163,10 @@ namespace AnotoGraphicTest
             listtmpy.Add(33.0);
             listtmpy.Add(32.875);
             listy.Add(listtmpy);
-
+            */
 
             /*
+            // お絵かきアルゴリズムver1
             for (int i = 0; i < xx.Length-1; i++)
             {
                 //e.Graphics.DrawImageUnscaled(b, (int)xx[i]*8, (int)yy[i]*8);
@@ -159,6 +175,8 @@ namespace AnotoGraphicTest
             }
              */
 
+            /*
+            // お絵かきアルゴリズムver2
             for (int i = 0; i < listy.Count; i++)
             {
                 for (int j = 0; j < listy[i].Count - 1; j++)
@@ -166,12 +184,12 @@ namespace AnotoGraphicTest
                     g.DrawLine(p, (int)listx[i][j] * 8, (int)listy[i][j] * 8, (int)listx[i][j + 1] * 8, (int)listy[i][j + 1] * 8);
                 }
             }
-            
+            */
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            // 動的に書くものなくなっちゃった。
+            // 動的に描くものなくなっちゃった。
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -211,88 +229,62 @@ namespace AnotoGraphicTest
             }
         }
 
-
         public void XmlSerialize(String path)
         {
-            for (int i = x1; i < x; i += x1)
-            {
-                for (int j = y1; j < y; j += y1)
-                {
-                    g.DrawImageUnscaled(bmp, i, j);
-                }
-            }
-
+            // XMLパースのためのDataSetを作成
             DataSet ds = new DataSet();
+            // DataSetに用意されているXMLパースのメソッドを使って読み込む
             ds.ReadXml(path);
 
+            // spタグの部分を全部抜き出す
             for (int i = 0; i < ds.Tables["sp"].Rows.Count; i++)
             {
                 Console.WriteLine("sp["+i+"] x:"+ds.Tables["sp"].Rows[i][2]+"y:"+ds.Tables["sp"].Rows[i][3]);
             }
 
-            // 1画の座標数
+            // strokeタグの部分を全部抜き出す。strokeは1画の座標数。
             for (int i = 0; i < ds.Tables["stroke"].Rows.Count; i++)
             {
                 Console.WriteLine("stroke[" + i + "]:" + ds.Tables["stroke"].Rows[i][0]);
             }
 
-            
-            List<List<double>> listx = new List<List<double>>();
-            List<List<double>> listy = new List<List<double>>();
+            // 格納するベースのListを作成
+            listx = new List<List<double>>();
+            listy = new List<List<double>>();
             int strokeCount = 0;
 
+            // ストローク数だけループ
             for (int i = 0; i < ds.Tables["stroke"].Rows.Count; i++)
             {
+                // 1ストローク用Listの中身を初期化
                 List<double> listtmpx = new List<double>();
                 List<double> listtmpy = new List<double>();
 
+                // 座標情報数だけループ
                 for (int j = 0; j < int.Parse(ds.Tables["stroke"].Rows[i][0].ToString()); j++)
                 {
+                    // spを取得
                     listtmpx.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][2].ToString()));
                     listtmpy.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][3].ToString())-800);
                     Console.WriteLine("x:" + listtmpx[j]+" y:"+listtmpy[j]);
                     strokeCount++;
                 }
+                // ベースのListに追加
                 listx.Add(listtmpx);
                 listy.Add(listtmpy);
             }
+        }
 
+        private void draw()
+        {
+            // お絵かき
             for (int i = 0; i < listy.Count; i++)
             {
                 for (int j = 0; j < listy[i].Count - 1; j++)
                 {
-                    g.DrawLine(p, (int)listx[i][j]*4 , (int)listy[i][j]*4 , (int)listx[i][j + 1]*4 , (int)listy[i][j + 1]*4 );
+                    g.DrawLine(p, (int)listx[i][j] * 4, (int)listy[i][j] * 4, (int)listx[i][j + 1] * 4, (int)listy[i][j + 1] * 4);
                 }
             }
-            
-
-
-            /*
-            XmlReader xmlReader = XmlReader.Create(path);
-
-            while (xmlReader.Read())
-            {
-                if (xmlReader.NodeType == XmlNodeType.Element)
-                {
-                    switch (xmlReader.LocalName)
-                    {
-                        case "sample":
-                            System.Console.WriteLine("type" + xmlReader.ReadString());
-                            break;
-                        case "name":
-                            System.Console.WriteLine("name" + xmlReader.ReadString());
-                            break;
-                        case "locality":
-                            System.Console.WriteLine("locality" + xmlReader.ReadString());
-                            break;
-                        case "weight":
-                            System.Console.WriteLine("weight" + xmlReader.ReadString());
-                            break;
-                    }
-                }
-            }
-            */
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -330,10 +322,8 @@ namespace AnotoGraphicTest
                 imgbmp = new Bitmap(ofd.FileName);  // ファイルパスから格納
                 pictureBox1.Image = imgbmp; // ピクチャーボックスに表示
                 g = Graphics.FromImage(imgbmp);
-                drawText();
+                draw(); // グラフィックに画像を表示した後に描く！
             }
-            
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -346,11 +336,12 @@ namespace AnotoGraphicTest
                 //選択されたファイル名を表示する
                 //Console.WriteLine(sfd.FileName);
 
+                // ダイアログで作ったパス・ファイル名のファイルストリームを作成
                 System.IO.FileStream fs = (System.IO.FileStream)sfd.OpenFile();
-      
-         this.pictureBox1.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
-         fs.Close();
-
+                // ファイルストリームに画像形式(JPEG)で流し込む
+                this.pictureBox1.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                // ファイルストリームを閉じてファイルを作成
+                fs.Close();
             }
 
         }
@@ -403,6 +394,5 @@ namespace AnotoGraphicTest
             //後始末（.NET Framework 4.0以降）
             sc.Dispose();
         }
-        
     }
 }
