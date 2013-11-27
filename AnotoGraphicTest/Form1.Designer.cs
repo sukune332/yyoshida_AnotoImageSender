@@ -38,9 +38,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 94);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(895, 584);
+            this.pictureBox1.Size = new System.Drawing.Size(770, 661);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -58,9 +58,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(832, 47);
+            this.button2.Font = new System.Drawing.Font("Meiryo UI", 12F);
+            this.button2.Location = new System.Drawing.Point(807, 47);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(100, 29);
             this.button2.TabIndex = 2;
             this.button2.Text = "画像読込";
             this.button2.UseVisualStyleBackColor = true;
@@ -68,10 +69,11 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(832, 76);
+            this.button3.Font = new System.Drawing.Font("Meiryo UI", 12F);
+            this.button3.Location = new System.Drawing.Point(807, 82);
             this.button3.Name = "button3";
             this.button3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(100, 29);
             this.button3.TabIndex = 3;
             this.button3.Text = "画像保存";
             this.button3.UseVisualStyleBackColor = true;
@@ -79,9 +81,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(832, 116);
+            this.button4.Font = new System.Drawing.Font("Meiryo UI", 12F);
+            this.button4.Location = new System.Drawing.Point(807, 117);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(100, 29);
             this.button4.TabIndex = 4;
             this.button4.Text = "メール送信";
             this.button4.UseVisualStyleBackColor = true;
