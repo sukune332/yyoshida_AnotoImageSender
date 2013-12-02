@@ -21,6 +21,9 @@ namespace AnotoGraphicTest
         int y1 = 20;
         int x = 500;
         int y = 500;
+        int xx = 20;
+        int yy = 20;
+        int ii = 0;
         List<List<double>> listx;
         List<List<double>> listy;
 
@@ -41,155 +44,34 @@ namespace AnotoGraphicTest
             br = new SolidBrush(Color.Blue);
             // 筆跡を描くためのペンを初期化（ペン）
             p = new Pen(br,5);
+
         }
 
-        void drawText()
+        void drawGrid()
         {
             // グリッド表示
-            for (int i = x1; i < x; i += x1)
+            for (int i = x1; i < pictureBox1.Width; i += x1)
             {
-                for (int j = y1; j < y; j += y1)
+                for (int j = y1; j < pictureBox1.Height; j += y1)
                 {
                     g.DrawImageUnscaled(bmp, i, j);
                 }
             }
 
-            /*
-             // 手打ちデータ。頑張りました。
-            double[] xx = new double[]{
-                09.875,
-                10.375,
-                10.375,
-                11.125,
-                14.875,
-                17.25,
-                16.75,
-                16.875,
-                17.375,
-                17.625,
-                18.25,
-                18.125,
-                18.125,
-
-                08.375,
-                08.5,
-                10.125,
-                13.625,
-                23.375,
-                26.0,
-                25.625
-
-
-            };
-            double[] yy = new double[]{
-                10.625,
-                10.375,
-                10.5,
-                09.875,
-                05.125,
-                00.875,
-                04.875,
-                13.75,
-                16.675,
-                28.375,
-                34.25,
-                33.875,
-                33.0,
-
-                34.875,
-                34.875,
-                35.0,
-                34.875,
-                32.875,
-                33.0,
-                32.875
-            };
-             */
-
-            /*
-            // List版 手打ちデータ
-            List<double> listtmpx = new List<double>();
-            List<List<double>> listx = new List<List<double>>();
-            List<double> listtmpy = new List<double>();
-            List<List<double>> listy = new List<List<double>>();
-
-            listtmpx.Add(09.875);
-            listtmpx.Add(10.375);
-            listtmpx.Add(10.375);
-            listtmpx.Add(11.125);
-            listtmpx.Add(14.875);
-            listtmpx.Add(17.25);
-            listtmpx.Add(16.75);
-            listtmpx.Add(16.875);
-            listtmpx.Add(17.375);
-            listtmpx.Add(17.625);
-            listtmpx.Add(18.25);
-            listtmpx.Add(18.125);
-            listtmpx.Add(18.125);
-            listx.Add(listtmpx);
-            
-            // もう一回初期化
-            listtmpx = new List<double>();
-            listtmpx.Add(08.375);
-            listtmpx.Add(08.5);
-            listtmpx.Add(10.125);
-            listtmpx.Add(13.625);
-            listtmpx.Add(23.375);
-            listtmpx.Add(26.0);
-            listtmpx.Add(25.625);
-            listx.Add(listtmpx);
-
-            listtmpy.Add(10.625);
-            listtmpy.Add(10.375);
-            listtmpy.Add(10.5);
-            listtmpy.Add(09.875);
-            listtmpy.Add(05.125);
-            listtmpy.Add(00.875);
-            listtmpy.Add(04.875);
-            listtmpy.Add(13.75);
-            listtmpy.Add(16.675);
-            listtmpy.Add(28.375);
-            listtmpy.Add(34.25);
-            listtmpy.Add(33.875);
-            listtmpy.Add(33.0);
-            listy.Add(listtmpy);
-
-            listtmpy = new List<double>();
-            listtmpy.Add(34.875);
-            listtmpy.Add(34.875);
-            listtmpy.Add(35.0);
-            listtmpy.Add(34.875);
-            listtmpy.Add(32.875);
-            listtmpy.Add(33.0);
-            listtmpy.Add(32.875);
-            listy.Add(listtmpy);
-            */
-
-            /*
-            // お絵かきアルゴリズムver1
-            for (int i = 0; i < xx.Length-1; i++)
-            {
-                //e.Graphics.DrawImageUnscaled(b, (int)xx[i]*8, (int)yy[i]*8);
-                //e.Graphics.FillRectangle(br, (int)xx[i]*8, (int)yy[i]*8, 5, 5);
-                e.Graphics.DrawLine(p, (int)xx[i] * 8, (int)yy[i] * 8, (int)xx[i + 1] * 8, (int)yy[i+1] * 8);
-            }
-             */
-
-            /*
-            // お絵かきアルゴリズムver2
-            for (int i = 0; i < listy.Count; i++)
-            {
-                for (int j = 0; j < listy[i].Count - 1; j++)
-                {
-                    g.DrawLine(p, (int)listx[i][j] * 8, (int)listy[i][j] * 8, (int)listx[i][j + 1] * 8, (int)listy[i][j + 1] * 8);
-                }
-            }
-            */
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             // 動的に描くものなくなっちゃった。
+
+            // グリッド表示
+            for (int i = x1; i < pictureBox1.Width; i += x1)
+            {
+                for (int j = y1; j < pictureBox1.Height; j += y1)
+                {
+                    e.Graphics.DrawImageUnscaled(bmp, i, j);
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -283,6 +165,8 @@ namespace AnotoGraphicTest
                 for (int j = 0; j < listy[i].Count - 1; j++)
                 {
                     g.DrawLine(p, (int)listx[i][j] * 4, (int)listy[i][j] * 4, (int)listx[i][j + 1] * 4, (int)listy[i][j + 1] * 4);
+                    System.Threading.Thread.Sleep(100);
+                    pictureBox1.Refresh();
                 }
             }
         }
@@ -393,6 +277,17 @@ namespace AnotoGraphicTest
             msg.Dispose();
             //後始末（.NET Framework 4.0以降）
             sc.Dispose();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            pictureBox1.Invalidate();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            timer1.Start();
+            
         }
     }
 }
