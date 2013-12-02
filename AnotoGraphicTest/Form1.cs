@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using AForge.Video.FFMPEG;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace AnotoGraphicTest
 {
@@ -26,6 +29,7 @@ namespace AnotoGraphicTest
         int ii = 0;
         List<List<double>> listx;
         List<List<double>> listy;
+        VideoFileWriter writer;
 
         public Form1()
         {
@@ -34,6 +38,8 @@ namespace AnotoGraphicTest
 
             // 一番のベースとなるGraphicを初期化する
             g = this.CreateGraphics();
+            g.PageUnit = GraphicsUnit.Inch;
+            //g.PageScale = 0.01f;
 
             // グリッド表示用の1点を作成
             bmp = new Bitmap(1, 1);
@@ -45,6 +51,22 @@ namespace AnotoGraphicTest
             // 筆跡を描くためのペンを初期化（ペン）
             p = new Pen(br,5);
 
+            writer = new VideoFileWriter();
+
+
+            string[] dirs = Directory.GetDirectories(@"\\vatican\AJX-AAE-ZA9-87");
+            DateTime stdTime = new DateTime(1);
+            int dirsnum = 0;
+            for (int i = 0; i < dirs.Length; i++)
+            {
+                DateTime dtCreate = System.IO.Directory.GetCreationTime(dirs[i]);
+                if (stdTime < dtCreate)
+                {
+                    stdTime = dtCreate;
+                    dirsnum = i;
+                }
+            }
+            XmlSerialize(dirs[dirsnum]+"\\2-stroke.xml");
         }
 
         void drawGrid()
@@ -147,7 +169,7 @@ namespace AnotoGraphicTest
                 {
                     // spを取得
                     listtmpx.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][2].ToString()));
-                    listtmpy.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][3].ToString())-800);
+                    listtmpy.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][3].ToString())-300);
                     Console.WriteLine("x:" + listtmpx[j]+" y:"+listtmpy[j]);
                     strokeCount++;
                 }
@@ -159,16 +181,23 @@ namespace AnotoGraphicTest
 
         private void draw()
         {
+            writer.Open("anoto.avi", 900, 600, 10, VideoCodec.MPEG4);
+
             // お絵かき
             for (int i = 0; i < listy.Count; i++)
             {
                 for (int j = 0; j < listy[i].Count - 1; j++)
                 {
                     g.DrawLine(p, (int)listx[i][j] * 4, (int)listy[i][j] * 4, (int)listx[i][j + 1] * 4, (int)listy[i][j + 1] * 4);
+                    Bitmap image = new Bitmap(900, 600, PixelFormat.Format24bppRgb);
+                    image = imgbmp;
+                    writer.WriteVideoFrame(image);
                     System.Threading.Thread.Sleep(100);
                     pictureBox1.Refresh();
                 }
             }
+
+            writer.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
