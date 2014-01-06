@@ -205,37 +205,31 @@ namespace AnotoGraphicTest
             //OpenFileDialogクラスのインスタンスを作成
             OpenFileDialog ofd = new OpenFileDialog();
 
-            //はじめのファイル名を指定する
-            //はじめに「ファイル名」で表示される文字列を指定する
-            //ofd.FileName = "default.html";
-            //はじめに表示されるフォルダを指定する
-            //指定しない（空の文字列）の時は、現在のディレクトリが表示される
-            //ofd.InitialDirectory = @"C:\";
             //[ファイルの種類]に表示される選択肢を指定する
             //指定しないとすべてのファイルが表示される
             ofd.Filter =
                 "すべてのファイル(*.*)|*.*";
-            //[ファイルの種類]ではじめに
-            //「すべてのファイル」が選択されているようにする
-            //ofd.FilterIndex = 2;
             //タイトルを設定する
             ofd.Title = "開くファイルを選択してください";
-            //ダイアログボックスを閉じる前に現在のディレクトリを復元するようにする
-            //ofd.RestoreDirectory = true;
-            //存在しないファイルの名前が指定されたとき警告を表示する
-            //デフォルトでTrueなので指定する必要はない
-            //ofd.CheckFileExists = true;
-            //存在しないパスが指定されたとき警告を表示する
-            //デフォルトでTrueなので指定する必要はない
-            //ofd.CheckPathExists = true;
 
             //ダイアログを表示する
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                // 描画処理
                 imgbmp = new Bitmap(ofd.FileName);  // ファイルパスから格納
                 pictureBox1.Image = imgbmp; // ピクチャーボックスに表示
                 g = Graphics.FromImage(imgbmp);
                 draw(); // グラフィックに画像を表示した後に描く！
+
+                // ローカル保存処理
+                // ダイアログで作ったパス・ファイル名のファイルストリームを作成
+                using (System.IO.FileStream fs = new FileStream("Image.jpg", FileMode.Create))
+                {
+                    // ファイルストリームに画像形式(JPEG)で流し込む
+                    this.pictureBox1.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    // ファイルストリームを閉じてファイルを作成
+                    fs.Close();
+                }
             }
         }
 
@@ -261,51 +255,61 @@ namespace AnotoGraphicTest
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //MailMessageの作成
-            System.Net.Mail.MailMessage msg = new System.Net.Mail.MailMessage();
-            //送信者
-            msg.From = new System.Net.Mail.MailAddress("sender@xxx.xxx");
-            //宛先
-            msg.To.Add(new System.Net.Mail.MailAddress("recipient@xxx.xxx"));
-            //.NET Framework 3.5以前では、以下のようにする
-            //msg.ReplyTo = new System.Net.Mail.MailAddress("replyto@xxx.xxx");
-            //Sender
-            msg.Sender = new System.Net.Mail.MailAddress("master@xxx.xxx");
+            //メッセージボックスを表示する
+            DialogResult result = MessageBox.Show("メールを送信しますか？",
+                "写真メール送信",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
 
-            //件名
-            msg.Subject = "こんにちは";
-            //本文
-            msg.Body = "こんにちは。\r\n\r\nそれではまた。";
+            // ダイアログでOKを押したときだけ送信処理
+            if (result == DialogResult.Yes)
+            {
+                //MailMessageの作成
+                System.Net.Mail.MailMessage msg = new System.Net.Mail.MailMessage();
+                //送信者
+                msg.From = new System.Net.Mail.MailAddress("sender@xxx.xxx");
+                //宛先
+                msg.To.Add(new System.Net.Mail.MailAddress("recipient@xxx.xxx"));
+                //.NET Framework 3.5以前では、以下のようにする
+                //msg.ReplyTo = new System.Net.Mail.MailAddress("replyto@xxx.xxx");
+                //Sender
+                msg.Sender = new System.Net.Mail.MailAddress("master@xxx.xxx");
 
-            //メールの配達が遅れたとき、失敗したとき、正常に配達されたときに通知する
-            msg.DeliveryNotificationOptions =
-                System.Net.Mail.DeliveryNotificationOptions.Delay |
-                System.Net.Mail.DeliveryNotificationOptions.OnFailure |
-                System.Net.Mail.DeliveryNotificationOptions.OnSuccess;
+                //件名
+                msg.Subject = "こんにちは";
+                //本文
+                msg.Body = "こんにちは。\r\n\r\nそれではまた。";
 
-            //"C:\test\1.gif"を添付する
-            System.Net.Mail.Attachment attach1 =
-                new System.Net.Mail.Attachment("C:\\test\\1.gif");
-            msg.Attachments.Add(attach1);
+                //メールの配達が遅れたとき、失敗したとき、正常に配達されたときに通知する
+                msg.DeliveryNotificationOptions =
+                    System.Net.Mail.DeliveryNotificationOptions.Delay |
+                    System.Net.Mail.DeliveryNotificationOptions.OnFailure |
+                    System.Net.Mail.DeliveryNotificationOptions.OnSuccess;
 
-            System.Net.Mail.SmtpClient sc = new System.Net.Mail.SmtpClient();
-            //SMTPサーバーなどを設定する
-            sc.Host = "localhost";
-            sc.Port = 25;
-            sc.Host = "smtp.gmail.com";
-            sc.Port = 587;
-            //GMail認証
-            sc.Credentials = new System.Net.NetworkCredential("ID", "pass");
-            //SSL
-            sc.EnableSsl = true;
-            sc.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-            //メッセージを送信する
-            sc.Send(msg);
+                //画像をファイルで添付する
+                System.Net.Mail.Attachment attach1 =new System.Net.Mail.Attachment("Image.jpg");
+                //動画の場合
+                //System.Net.Mail.Attachment attach1 = new System.Net.Mail.Attachment("anoto.avi");
+                msg.Attachments.Add(attach1);
 
-            //後始末
-            msg.Dispose();
-            //後始末（.NET Framework 4.0以降）
-            sc.Dispose();
+                System.Net.Mail.SmtpClient sc = new System.Net.Mail.SmtpClient();
+                //SMTPサーバーなどを設定する
+                sc.Host = "smtp.gmail.com";
+                sc.Port = 587;
+                //GMail認証
+                sc.Credentials = new System.Net.NetworkCredential("ID", "pass");
+                //SSL
+                sc.EnableSsl = true;
+                sc.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                //メッセージを送信する
+                sc.Send(msg);
+
+                //後始末
+                msg.Dispose();
+                //後始末（.NET Framework 4.0以降）
+                sc.Dispose();
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -316,7 +320,6 @@ namespace AnotoGraphicTest
         private void button5_Click(object sender, EventArgs e)
         {
             timer1.Start();
-            
         }
     }
 }
