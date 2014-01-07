@@ -51,6 +51,7 @@ namespace AnotoGraphicTest
             // 筆跡を描くためのペンを初期化（ペン）
             p = new Pen(br,5);
 
+            // 
             writer = new VideoFileWriter();
 
 
@@ -59,7 +60,7 @@ namespace AnotoGraphicTest
             int dirsnum = 0;
             for (int i = 0; i < dirs.Length; i++)
             {
-                DateTime dtCreate = System.IO.Directory.GetCreationTime(dirs[i]);
+                DateTime dtCreate = Directory.GetCreationTime(dirs[i]);
                 if (stdTime < dtCreate)
                 {
                     stdTime = dtCreate;
@@ -181,7 +182,7 @@ namespace AnotoGraphicTest
 
         private void draw()
         {
-            writer.Open("anoto.avi", 900, 600, 10, VideoCodec.MPEG4);
+            writer.Open("anoto.avi", 900, 600, 10, VideoCodec.MSMPEG4v3);   // 適宜フォーマットを変える必要がある
 
             // お絵かき
             for (int i = 0; i < listy.Count; i++)
