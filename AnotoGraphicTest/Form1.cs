@@ -20,13 +20,8 @@ namespace AnotoGraphicTest
         Bitmap bmp,imgbmp;
         Brush br;
         Pen p;
-        int x1 = 20;
-        int y1 = 20;
-        int x = 500;
-        int y = 500;
-        int xx = 20;
-        int yy = 20;
-        int ii = 0;
+        int gridX = 20;
+        int gridY = 20;
         List<List<double>> listx;
         List<List<double>> listy;
         VideoFileWriter writer;
@@ -74,29 +69,20 @@ namespace AnotoGraphicTest
             XmlSerialize(dirs[dirsnum]+"\\2-stroke.xml");
         }
 
-        void drawGrid()
-        {
-            // グリッド表示
-            for (int i = x1; i < pictureBox1.Width; i += x1)
-            {
-                for (int j = y1; j < pictureBox1.Height; j += y1)
-                {
-                    g.DrawImageUnscaled(bmp, i, j);
-                }
-            }
-
-        }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             // 動的に描くものなくなっちゃった。
 
             // グリッド表示
-            for (int i = x1; i < pictureBox1.Width; i += x1)
+            if (checkBox1.CheckState == CheckState.Checked)
             {
-                for (int j = y1; j < pictureBox1.Height; j += y1)
+                for (int i = gridX; i < pictureBox1.Width; i += gridX)
                 {
-                    e.Graphics.DrawImageUnscaled(bmp, i, j);
+                    for (int j = gridY; j < pictureBox1.Height; j += gridY)
+                    {
+                        e.Graphics.DrawImageUnscaled(bmp, i, j);
+                    }
                 }
             }
         }
@@ -323,5 +309,11 @@ namespace AnotoGraphicTest
         {
             pictureBox1.Invalidate();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Invalidate();
+        }
+
     }
 }
