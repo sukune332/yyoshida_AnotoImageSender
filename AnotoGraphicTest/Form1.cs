@@ -31,6 +31,8 @@ namespace AnotoGraphicTest
         List<List<double>> listy;
         VideoFileWriter writer;
 
+        Size imageSize;
+
         public Form1()
         {
             // GUIを初期化してくれる公式のメソッド。ありがたい。
@@ -170,7 +172,7 @@ namespace AnotoGraphicTest
                 {
                     // spを取得
                     listtmpx.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][2].ToString()));
-                    listtmpy.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][3].ToString())-300);
+                    listtmpy.Add(double.Parse(ds.Tables["sp"].Rows[strokeCount][3].ToString())-100);
                     Console.WriteLine("x:" + listtmpx[j]+" y:"+listtmpy[j]);
                     strokeCount++;
                 }
@@ -182,7 +184,7 @@ namespace AnotoGraphicTest
 
         private void draw()
         {
-            writer.Open("anoto.avi", 900, 600, 10, VideoCodec.MSMPEG4v3);   // 適宜フォーマットを変える必要がある
+            writer.Open("anoto.avi", imageSize.Width, imageSize.Height, 10, VideoCodec.MSMPEG4v3);   // 適宜フォーマットを変える必要がある
 
             // お絵かき
             for (int i = 0; i < listy.Count; i++)
@@ -190,10 +192,10 @@ namespace AnotoGraphicTest
                 for (int j = 0; j < listy[i].Count - 1; j++)
                 {
                     g.DrawLine(p, (int)listx[i][j] * 4, (int)listy[i][j] * 4, (int)listx[i][j + 1] * 4, (int)listy[i][j + 1] * 4);
-                    Bitmap image = new Bitmap(900, 600, PixelFormat.Format24bppRgb);
+                    Bitmap image = new Bitmap(imageSize.Width, imageSize.Height, PixelFormat.Format24bppRgb);
                     image = imgbmp;
                     writer.WriteVideoFrame(image);
-                    System.Threading.Thread.Sleep(100);
+                    //System.Threading.Thread.Sleep(100);
                     pictureBox1.Refresh();
                 }
             }
@@ -218,6 +220,8 @@ namespace AnotoGraphicTest
             {
                 // 描画処理
                 imgbmp = new Bitmap(ofd.FileName);  // ファイルパスから格納
+                imageSize = imgbmp.Size;    // 画像サイズ取得
+
                 pictureBox1.Image = imgbmp; // ピクチャーボックスに表示
                 g = Graphics.FromImage(imgbmp);
                 draw(); // グラフィックに画像を表示した後に描く！
