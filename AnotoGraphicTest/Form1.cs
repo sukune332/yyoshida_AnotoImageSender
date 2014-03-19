@@ -30,6 +30,8 @@ namespace AnotoGraphicTest
         List<List<double>> listx;
         List<List<double>> listy;
         VideoFileWriter writer;
+        int characterScale = 2; // 筆跡文字の表示倍率
+        // 0.125px単位なので分解能8である
 
         Size imageSize;
 
@@ -191,7 +193,7 @@ namespace AnotoGraphicTest
             {
                 for (int j = 0; j < listy[i].Count - 1; j++)
                 {
-                    g.DrawLine(p, (int)listx[i][j] * 4, (int)listy[i][j] * 4, (int)listx[i][j + 1] * 4, (int)listy[i][j + 1] * 4);
+                    g.DrawLine(p, (int)listx[i][j] * characterScale, (int)listy[i][j] * characterScale, (int)listx[i][j + 1] * characterScale, (int)listy[i][j + 1] * characterScale);
                     Bitmap image = new Bitmap(imageSize.Width, imageSize.Height, PixelFormat.Format24bppRgb);
                     image = imgbmp;
                     writer.WriteVideoFrame(image);
@@ -320,11 +322,6 @@ namespace AnotoGraphicTest
         private void timer1_Tick(object sender, EventArgs e)
         {
             pictureBox1.Invalidate();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            timer1.Start();
         }
     }
 }
