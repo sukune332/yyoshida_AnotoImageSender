@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox_ID = new System.Windows.Forms.TextBox();
             this.textBox_SMTP = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_Password = new System.Windows.Forms.TextBox();
@@ -41,8 +43,6 @@
             this.textBox_Mail2 = new System.Windows.Forms.TextBox();
             this.textBox_Message = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox_ID = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,12 +63,29 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "メール";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 12);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "ユーザーID";
+            // 
+            // textBox_ID
+            // 
+            this.textBox_ID.Location = new System.Drawing.Point(91, 44);
+            this.textBox_ID.Name = "textBox_ID";
+            this.textBox_ID.Size = new System.Drawing.Size(286, 19);
+            this.textBox_ID.TabIndex = 1;
+            this.textBox_ID.Text = "aaa@example.com";
+            // 
             // textBox_SMTP
             // 
             this.textBox_SMTP.Location = new System.Drawing.Point(91, 94);
             this.textBox_SMTP.Name = "textBox_SMTP";
             this.textBox_SMTP.Size = new System.Drawing.Size(286, 19);
-            this.textBox_SMTP.TabIndex = 4;
+            this.textBox_SMTP.TabIndex = 3;
             this.textBox_SMTP.Text = "smtp.gmail.com";
             // 
             // label3
@@ -85,7 +102,7 @@
             this.textBox_Password.Location = new System.Drawing.Point(91, 69);
             this.textBox_Password.Name = "textBox_Password";
             this.textBox_Password.Size = new System.Drawing.Size(286, 19);
-            this.textBox_Password.TabIndex = 3;
+            this.textBox_Password.TabIndex = 2;
             this.textBox_Password.Text = "aaa@example.com";
             this.textBox_Password.UseSystemPasswordChar = true;
             // 
@@ -129,7 +146,7 @@
             this.button1.Location = new System.Drawing.Point(329, 237);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 6;
             this.button1.Text = "保存";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -139,7 +156,7 @@
             this.button2.Location = new System.Drawing.Point(248, 237);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
+            this.button2.TabIndex = 7;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -149,7 +166,7 @@
             this.textBox_Mail2.Location = new System.Drawing.Point(103, 170);
             this.textBox_Mail2.Name = "textBox_Mail2";
             this.textBox_Mail2.Size = new System.Drawing.Size(286, 19);
-            this.textBox_Mail2.TabIndex = 6;
+            this.textBox_Mail2.TabIndex = 4;
             this.textBox_Mail2.Text = "bbb@example.com";
             // 
             // textBox_Message
@@ -157,7 +174,7 @@
             this.textBox_Message.Location = new System.Drawing.Point(103, 195);
             this.textBox_Message.Name = "textBox_Message";
             this.textBox_Message.Size = new System.Drawing.Size(286, 19);
-            this.textBox_Message.TabIndex = 7;
+            this.textBox_Message.TabIndex = 5;
             this.textBox_Message.Text = "こんにちは。画像を送ります。";
             // 
             // label5
@@ -168,23 +185,6 @@
             this.label5.Size = new System.Drawing.Size(50, 12);
             this.label5.TabIndex = 8;
             this.label5.Text = "メッセージ";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 47);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(56, 12);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "ユーザーID";
-            // 
-            // textBox_ID
-            // 
-            this.textBox_ID.Location = new System.Drawing.Point(91, 44);
-            this.textBox_ID.Name = "textBox_ID";
-            this.textBox_ID.Size = new System.Drawing.Size(286, 19);
-            this.textBox_ID.TabIndex = 5;
-            this.textBox_ID.Text = "aaa@example.com";
             // 
             // SettingWindow
             // 

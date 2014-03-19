@@ -38,14 +38,14 @@ namespace AnotoGraphicTest
             f1.myMailID = textBox_ID.Text;
             f1.myMailPassword = textBox_Password.Text;
             f1.myMailServer = textBox_SMTP.Text;
-            f1.toMailAddress = textBox_Message.Text;
+            f1.toMailAddress = textBox_Mail2.Text;
             f1.toMailMessage = textBox_Message.Text;
 
             Properties.Settings.Default.myMailAddress = textBox_Mail.Text;
             Properties.Settings.Default.myMailID = textBox_ID.Text;
             Properties.Settings.Default.myMailPassword = textBox_Password.Text;
             Properties.Settings.Default.myMailServer = textBox_SMTP.Text;
-            Properties.Settings.Default.toMailAddress = textBox_Message.Text;
+            Properties.Settings.Default.toMailAddress = textBox_Mail2.Text;
             Properties.Settings.Default.toMailMessage = textBox_Message.Text;
             Properties.Settings.Default.Save();
 
