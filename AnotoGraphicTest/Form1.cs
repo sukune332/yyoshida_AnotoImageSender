@@ -27,6 +27,7 @@ namespace AnotoGraphicTest
         VideoFileWriter writer;
         int characterScale = 2; // 筆跡文字の表示倍率
         // 0.125px単位なので分解能8である
+        public String myMailAddress, myMailPassword, myMailServer, toMailAddress, toMailMessage;
 
         Size imageSize;
 
@@ -34,6 +35,13 @@ namespace AnotoGraphicTest
         {
             // GUIを初期化してくれる公式のメソッド。ありがたい。
             InitializeComponent();
+
+            // 保存されている設定を自動ロード
+            myMailAddress = Properties.Settings.Default.myMailAddress;
+            myMailPassword = Properties.Settings.Default.myMailPassword;
+            myMailServer = Properties.Settings.Default.myMailServer;
+            toMailAddress = Properties.Settings.Default.toMailAddress;
+            toMailMessage = Properties.Settings.Default.toMailMessage;
 
             // 一番のベースとなるGraphicを初期化する
             g = this.CreateGraphics();
@@ -50,23 +58,33 @@ namespace AnotoGraphicTest
             // 筆跡を描くためのペンを初期化（ペン）
             p = new Pen(br,5);
 
-            // 
+            // ビデオ録画用writer
             writer = new VideoFileWriter();
 
-
-            string[] dirs = Directory.GetDirectories(@"\\vatican\AJX-AAE-ZA9-87");
-            DateTime stdTime = new DateTime(1);
-            int dirsnum = 0;
-            for (int i = 0; i < dirs.Length; i++)
+            try
             {
-                DateTime dtCreate = Directory.GetCreationTime(dirs[i]);
-                if (stdTime < dtCreate)
+                string[] dirs = Directory.GetDirectories(@"\\vatican\AJX-AAE-ZA9-87");
+                DateTime stdTime = new DateTime(1);
+                int dirsnum = 0;
+                for (int i = 0; i < dirs.Length; i++)
                 {
-                    stdTime = dtCreate;
-                    dirsnum = i;
+                    DateTime dtCreate = Directory.GetCreationTime(dirs[i]);
+                    if (stdTime < dtCreate)
+                    {
+                        stdTime = dtCreate;
+                        dirsnum = i;
+                    }
                 }
+                XmlSerialize(dirs[dirsnum] + "\\2-stroke.xml");
             }
-            XmlSerialize(dirs[dirsnum]+"\\2-stroke.xml");
+            catch (System.IO.IOException)
+            {
+                MessageBox.Show("アノトサーバからデータを取得できませんでした。\nエクスプローラで接続後、再度アプリケーションを起動してください",
+                                "アノトサーバ接続エラー",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+            
         }
 
 
@@ -313,6 +331,12 @@ namespace AnotoGraphicTest
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Invalidate();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SettingWindow sw = new SettingWindow(this);
+            sw.Show();
         }
 
     }
