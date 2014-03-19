@@ -27,7 +27,7 @@ namespace AnotoGraphicTest
         VideoFileWriter writer;
         int characterScale = 2; // 筆跡文字の表示倍率
         // 0.125px単位なので分解能8である
-        public String myMailAddress, myMailPassword, myMailServer, toMailAddress, toMailMessage;
+        public String myMailAddress, myMailID, myMailPassword, myMailServer, toMailAddress, toMailMessage;
 
         Size imageSize;
 
@@ -279,18 +279,18 @@ namespace AnotoGraphicTest
                 //MailMessageの作成
                 System.Net.Mail.MailMessage msg = new System.Net.Mail.MailMessage();
                 //送信者
-                msg.From = new System.Net.Mail.MailAddress("sender@xxx.xxx");
+                msg.From = new System.Net.Mail.MailAddress(myMailAddress);
                 //宛先
-                msg.To.Add(new System.Net.Mail.MailAddress("recipient@xxx.xxx"));
+                msg.To.Add(new System.Net.Mail.MailAddress(toMailAddress));
                 //.NET Framework 3.5以前では、以下のようにする
                 //msg.ReplyTo = new System.Net.Mail.MailAddress("replyto@xxx.xxx");
                 //Sender
-                msg.Sender = new System.Net.Mail.MailAddress("master@xxx.xxx");
+                //msg.Sender = new System.Net.Mail.MailAddress("master@xxx.xxx");
 
                 //件名
                 msg.Subject = "こんにちは";
                 //本文
-                msg.Body = "こんにちは。\r\n\r\nそれではまた。";
+                msg.Body = toMailMessage;
 
                 //メールの配達が遅れたとき、失敗したとき、正常に配達されたときに通知する
                 msg.DeliveryNotificationOptions =
@@ -306,10 +306,10 @@ namespace AnotoGraphicTest
 
                 System.Net.Mail.SmtpClient sc = new System.Net.Mail.SmtpClient();
                 //SMTPサーバーなどを設定する
-                sc.Host = "smtp.gmail.com";
+                sc.Host = myMailServer;
                 sc.Port = 587;
                 //GMail認証
-                sc.Credentials = new System.Net.NetworkCredential("ID", "pass");
+                sc.Credentials = new System.Net.NetworkCredential(myMailID, myMailPassword);
                 //SSL
                 sc.EnableSsl = true;
                 sc.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;

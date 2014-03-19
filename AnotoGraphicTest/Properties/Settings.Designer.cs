@@ -82,5 +82,17 @@ namespace AnotoGraphicTest.Properties {
                 this["toMailMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string myMailID {
+            get {
+                return ((string)(this["myMailID"]));
+            }
+            set {
+                this["myMailID"] = value;
+            }
+        }
     }
 }
